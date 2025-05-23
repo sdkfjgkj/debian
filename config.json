@@ -1,0 +1,172 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "debug",
+    "timestamp": true
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "0.0.0.0:20123",
+      "external_ui": "/var/lib/sing-box/ui",
+      "secret": "",
+      "external_ui_download_url": "https://ok.bighaohao.eu.org/https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip",
+      "external_ui_download_detour": "全球直连",
+      "default_mode": "rule"
+    },
+    
+    "cache_file": {
+      "enabled": true,
+      "path": "/var/lib/sing-box/cache.db",
+      "store_fakeip": false
+    }
+    
+  },
+
+
+  "dns": {
+     "servers": [
+      { "tag": "google", "type": "tls", "server": "8.8.8.8", "server_port": 853, "detour": "节点选择" },
+      { "tag": "Local-TCP", "type": "tcp", "server": "202.102.224.68", "server_port": 53 },
+      { "tag": "Local-UDP", "type": "udp", "server": "202.102.224.68", "server_port": 53 },
+      { "tag": "cn-TCP", "type": "tcp", "server": "202.102.227.68", "server_port": 53 },
+      { "tag": "cn-UDP", "type": "udp", "server": "202.102.227.68", "server_port": 53 } ],
+    "rules": [ 
+      { "server": "Local-UDP", "disable_cache": true, "domain_suffix": ["ip6-localhost", "ip6-loopback", "localhost"] }, 
+      { "server": "Local-UDP", "domain_suffix": ["pool.ntp.org"], "strategy": "prefer_ipv4" }, 
+      { "server": "cn-UDP", "rule_set": "cn", "strategy": "prefer_ipv4" },
+      { "server": "google", "rule_set": "proxy", "strategy": "ipv4_only" },
+      { "server": "Local-UDP", "clash_mode": "direct", "strategy": "ipv4_only" },
+      { "server": "google", "clash_mode": "global", "strategy": "ipv4_only" }],
+    "independent_cache": true,  
+    "final": "google",
+    "strategy": "ipv4_only"
+  },
+
+"inbounds": [
+  {
+    "tag": "tun-in",
+    "type": "tun",
+    "address": [
+      "172.19.0.1/30",
+      "fdfe:dcba:9876::1/126"
+    ],
+    "mtu": 9000,
+    "auto_route": true,
+    "auto_redirect": true,
+    "stack": "mixed"
+
+  }
+
+
+],
+  "outbounds": [
+    { "type": "selector", "tag": "Microsoft", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "Amazon", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "Google", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "Apple", "outbounds": [ "全球直连", "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "AI", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "GitHub", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "Paypal", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "PikPak", "outbounds": [ "全球直连", "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "Telegram", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "Spotify", "outbounds": [ "美国策略", "日本策略", "全球直连" ] },
+    { "type": "selector", "tag": "Instagram", "outbounds": [ "美国策略", "全球直连", "日本策略" ] },
+    { "type": "selector", "tag": "YouTube", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "OKX", "outbounds": [ "美国策略", "全球直连", "日本策略" ] },
+    { "type": "selector", "tag": "SpeedTest", "outbounds": [ "全球直连", "美国策略", "日本策略" ] },
+    { "type": "selector", "tag": "美国策略", "outbounds": [ "US-01", "US-02", "US-03", "US-05", "US-06", "US-07", "US-08", "US-09", "US-10", "US-11" ]},
+    { "type": "selector", "tag": "日本策略", "outbounds": [ "JP-01", "JP-02", "JP-03", "JP-05", "JP-06", "JP-07", "JP-08", "JP-09", "JP-10", "JP-11" ]},
+    { "type": "selector", "tag": "节点选择", "outbounds": [ "美国策略", "日本策略" ] },
+    { "type": "direct", "tag": "全球直连"},
+    { "type": "selector", "tag": "GLOBAL", "outbounds": [ "美国策略", "全球直连", "日本策略" ] },
+
+ 
+
+    { "type": "vless", "tag": "JP-01", "server": "23.158.24.22", "server_port": 9556, "uuid": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "flow": "", "packet_encoding": "xudp", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" }, "reality": { "enabled": true, "public_key": "B-rirsqrF2oGTIJVTlX7FierFaWfMSzo-ieSAihMdS0", "short_id": "" } }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_connections": 8, "min_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "hysteria2", "tag": "JP-02", "server": "23.158.24.22", "server_port": 9557, "server_ports": [ "35000:36000" ], "up_mbps": 200, "down_mbps": 1000, "password": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "tls": { "enabled": true, "insecure": true, "server_name": "", "alpn": [ "h3" ] }},
+    { "type": "tuic", "tag": "JP-03", "server": "23.158.24.22", "server_port": 9558, "uuid": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "password": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "congestion_control": "bbr", "udp_relay_mode": "native", "zero_rtt_handshake": false, "heartbeat": "10s", "tls": { "enabled": true, "insecure": true, "server_name": "", "alpn": [ "h3" ] } },
+    { "type": "shadowtls", "tag": "JP-05", "server": "23.158.24.22", "server_port": 9559, "version": 3, "password": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" } } },
+    { "type": "shadowsocks", "tag": "JP-06", "server": "23.158.24.22", "server_port": 9560, "method": "aes-128-gcm", "password": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "multiplex": { "enabled": true, "protocol": "h2mux", "max_connections": 8, "min_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "trojan", "tag": "JP-07", "server": "23.158.24.22", "server_port": 9561, "password": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "tls": { "enabled": true, "insecure": true, "server_name": "", "utls": { "enabled": true, "fingerprint": "chrome" } }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_connections": 8, "min_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "vmess", "tag": "JP-08", "server": "skk.moe", "server_port": 80, "uuid": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "security": "auto", "transport": { "type": "ws", "path": "/6fc20f46-deb9-4167-9cd1-d43129d8291e-vmess", "headers": { "Host": "zgojp.ferrymanmark.cloudns.org" } }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "vless", "tag": "JP-09", "server": "skk.moe", "server_port": 443, "uuid": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "tls": { "enabled": true, "server_name": "zgojp.ferrymanmark.cloudns.org", "utls": { "enabled": true, "fingerprint": "chrome" } }, "transport": { "type": "ws", "path": "/6fc20f46-deb9-4167-9cd1-d43129d8291e-vless", "headers": { "Host": "zgojp.ferrymanmark.cloudns.org" }, "max_early_data": 2048, "early_data_header_name": "Sec-WebSocket-Protocol" }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "vless", "tag": "JP-10", "server": "23.158.24.22", "server_port": 9564, "uuid": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" }, "reality": { "enabled": true, "public_key": "B-rirsqrF2oGTIJVTlX7FierFaWfMSzo-ieSAihMdS0", "short_id": "" } }, "packet_encoding": "xudp", "transport": { "type": "http" } },
+    { "type": "vless", "tag": "JP-11", "server": "23.158.24.22", "server_port": 9565, "uuid": "6fc20f46-deb9-4167-9cd1-d43129d8291e", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" }, "reality": { "enabled": true, "public_key": "B-rirsqrF2oGTIJVTlX7FierFaWfMSzo-ieSAihMdS0", "short_id": "" } }, "packet_encoding": "xudp", "transport": { "type": "grpc", "service_name": "grpc" } },
+
+
+
+
+    { "type": "vless", "tag": "US-01", "server": "38.148.249.205", "server_port": 23817, "uuid": "8127699a-d30c-4670-b693-80ed49583810", "flow": "", "packet_encoding": "xudp", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" }, "reality": { "enabled": true, "public_key": "u99UQf0gdlpFxA3NNCHe7cI52hOvvMUzyMoQhWI5hhY", "short_id": "" } }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_connections": 8, "min_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "hysteria2", "tag": "US-02", "server": "38.148.249.205", "server_port": 23818, "server_ports": [ "21000:22000" ], "up_mbps": 200, "down_mbps": 1000, "password": "8127699a-d30c-4670-b693-80ed49583810", "tls": { "enabled": true, "insecure": true, "server_name": "", "alpn": [ "h3" ] } },
+    { "type": "tuic", "tag": "US-03", "server": "38.148.249.205", "server_port": 23819, "uuid": "8127699a-d30c-4670-b693-80ed49583810", "password": "8127699a-d30c-4670-b693-80ed49583810", "congestion_control": "bbr", "udp_relay_mode": "native", "zero_rtt_handshake": false, "heartbeat": "10s", "tls": { "enabled": true, "insecure": true, "server_name": "", "alpn": [ "h3" ] } },
+    { "type": "shadowtls", "tag": "US-05", "server": "38.148.249.205", "server_port": 23820, "version": 3, "password": "8127699a-d30c-4670-b693-80ed49583810", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" } } },
+    { "type": "shadowsocks", "tag": "US-06", "server": "38.148.249.205", "server_port": 23821, "method": "aes-128-gcm", "password": "8127699a-d30c-4670-b693-80ed49583810", "multiplex": { "enabled": true, "protocol": "h2mux", "max_connections": 8, "min_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "trojan", "tag": "US-07", "server": "38.148.249.205", "server_port": 23822, "password": "8127699a-d30c-4670-b693-80ed49583810", "tls": { "enabled": true, "insecure": true, "server_name": "", "utls": { "enabled": true, "fingerprint": "chrome" } }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_connections": 8, "min_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "vmess", "tag": "US-08", "server": "skk.moe", "server_port": 80, "uuid": "8127699a-d30c-4670-b693-80ed49583810", "security": "auto", "transport": { "type": "ws", "path": "/8127699a-d30c-4670-b693-80ed49583810-vmess", "headers": { "Host": "zgoo.ferrymanmark.cloudns.org" } }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "vless", "tag": "US-09", "server": "skk.moe", "server_port": 443, "uuid": "8127699a-d30c-4670-b693-80ed49583810", "tls": { "enabled": true, "server_name": "zgoo.ferrymanmark.cloudns.org", "utls": { "enabled": true, "fingerprint": "chrome" } }, "transport": { "type": "ws", "path": "/8127699a-d30c-4670-b693-80ed49583810-vless", "headers": { "Host": "zgoo.ferrymanmark.cloudns.org" }, "max_early_data": 2048, "early_data_header_name": "Sec-WebSocket-Protocol" }, "multiplex": { "enabled": true, "protocol": "h2mux", "max_streams": 16, "padding": true, "brutal": { "enabled": false, "up_mbps": 1000, "down_mbps": 1000 } } },
+    { "type": "vless", "tag": "US-10", "server": "38.148.249.205", "server_port": 23825, "uuid": "8127699a-d30c-4670-b693-80ed49583810", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" }, "reality": { "enabled": true, "public_key": "u99UQf0gdlpFxA3NNCHe7cI52hOvvMUzyMoQhWI5hhY", "short_id": "" } }, "packet_encoding": "xudp", "transport": { "type": "http" } },
+    { "type": "vless", "tag": "US-11", "server": "38.148.249.205", "server_port": 23826, "uuid": "8127699a-d30c-4670-b693-80ed49583810", "tls": { "enabled": true, "server_name": "addons.mozilla.org", "utls": { "enabled": true, "fingerprint": "chrome" }, "reality": { "enabled": true, "public_key": "u99UQf0gdlpFxA3NNCHe7cI52hOvvMUzyMoQhWI5hhY", "short_id": "" } }, "packet_encoding": "xudp", "transport": { "type": "grpc", "service_name": "grpc" } } ],
+
+    
+
+    
+ 
+  "route": {
+  "default_domain_resolver": { "server": "Local-UDP", "strategy": "ipv4_only" },
+    "rules": [
+      { "action": "sniff" },
+      { "action": "hijack-dns", "protocol": "dns" },
+      { "port": 123, "protocol": "udp", "outbound": "全球直连" },
+      { "protocol": "quic", "outbound": "节点选择" },
+      { "domain_keyword": "ultramobile", "outbound": "美国策略" },
+      { "rule_set": ["private", "privateip"], "outbound": "全球直连" },
+      { "rule_set": [ "speedtest" ], "outbound": "SpeedTest" },
+      { "rule_set": ["okx"], "outbound": "OKX" },
+      { "rule_set": ["youtube"], "outbound": "YouTube" },
+      { "rule_set": [ "spotify" ], "outbound": "Spotify" },
+      { "rule_set": [ "telegram", "telegramip" ], "outbound": "Telegram" },
+      { "rule_set": [ "instagram" ], "outbound": "Instagram" },
+      { "rule_set": [ "pikpak" ], "outbound": "PikPak" },
+      { "rule_set": [ "paypal" ], "outbound": "Paypal" },
+      { "rule_set": [ "github" ], "outbound": "GitHub" },
+      { "rule_set": [ "openai" ], "outbound": "AI" },
+      { "rule_set": ["apple" ], "outbound": "Apple" },
+      { "rule_set": ["google"], "outbound": "Google" },
+      { "rule_set": [ "amazon" ], "outbound": "Amazon" },
+      { "rule_set": [ "microsoft" ], "outbound": "Microsoft" },
+      { "rule_set": [ "proxy" ], "outbound": "节点选择" },
+      { "rule_set": [ "cn", "cnip" ], "outbound": "全球直连" },
+      { "clash_mode": "direct", "outbound": "全球直连" },
+      { "clash_mode": "global", "outbound": "GLOBAL" } ],
+    "rule_set": [
+      { "tag": "privateip", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/sing-box-ruleset/privateip.srs", "download_detour": "全球直连" },
+      { "tag": "private", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/sing-box-ruleset/private.srs", "download_detour": "全球直连" },
+      { "tag": "speedtest", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-ookla-speedtest.srs", "download_detour": "全球直连" },
+      { "tag": "amazon", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-amazon.srs", "download_detour": "全球直连" },
+      { "tag": "microsoft", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-microsoft.srs", "download_detour": "全球直连" },
+      { "tag": "google", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-google.srs", "download_detour": "全球直连" },
+      { "tag": "apple", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-apple.srs", "download_detour": "全球直连" },
+      { "tag": "pikpak", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-pikpak.srs", "download_detour": "全球直连" },
+      { "tag": "paypal", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-paypal.srs", "download_detour": "全球直连" },
+      { "tag": "github", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-github.srs", "download_detour": "全球直连" },
+      { "tag": "spotify", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-spotify.srs", "download_detour": "全球直连" },
+      { "tag": "telegramip", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/sing-box-ruleset/telegramip.srs", "download_detour": "全球直连" },
+      { "tag": "telegram", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-telegram.srs", "download_detour": "全球直连" },
+      { "tag": "youtube", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-youtube.srs", "download_detour": "全球直连" },
+      { "tag": "openai", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-openai.srs", "download_detour": "全球直连" },
+      { "tag": "okx", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-okx.srs", "download_detour": "全球直连" },
+      { "tag": "instagram", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-instagram.srs", "download_detour": "全球直连" },
+      { "tag": "proxy", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/sing-box-ruleset/proxy.srs", "download_detour": "全球直连" },
+      { "tag": "cnip", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/sing-box-ruleset/cnip.srs", "download_detour": "全球直连" },
+      { "tag": "cn", "type": "remote", "format": "binary", "url": "https://ok.bighaohao.eu.org/https://github.com/DustinWin/ruleset_geodata/raw/refs/heads/sing-box-ruleset/cn.srs", "download_detour": "全球直连"} ], 
+    "auto_detect_interface": true,
+    "final": "节点选择"
+      
+  }
+}
+  
+
+
+
+
+
